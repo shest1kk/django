@@ -19,7 +19,7 @@ class Cinemas(models.Model):
 
 class Categories(models.Model):
     # Список категорий
-    name=models.CharField('Категория', max_length=150)
+    name = models.CharField('Категория', max_length=150)
     description = models.TextField('Описание')
     url = models.SlugField(max_length=150, unique=True)
 
