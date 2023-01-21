@@ -17,6 +17,7 @@ class Cinemas(models.Model):
         verbose_name = 'Кинотеатр'
         verbose_name_plural = 'Кинотеатры'
 
+
 class Categories(models.Model):
     # Список категорий
     name = models.CharField('Категория', max_length=150)
@@ -33,7 +34,7 @@ class Categories(models.Model):
 
 class Genre(models.Model):
     # Список жанров
-    name = models.CharField('Жанр', max_length=100)
+    name = models.CharField('Жанр', max_length=100, help_text='')
     description = models.TextField('Описание')
     url = models.SlugField(max_length=100, unique=True)
 
@@ -43,6 +44,7 @@ class Genre(models.Model):
     class Meta:
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
+
 
 class Actors(models.Model):
     # Актеры
@@ -56,6 +58,7 @@ class Actors(models.Model):
     class Meta:
         verbose_name = 'Актеры'
         verbose_name_plural = 'Актеры'
+
 
 class Movie(models.Model):
     # Список фильмов
@@ -79,6 +82,7 @@ class Movie(models.Model):
         verbose_name = 'Фильм'
         verbose_name_plural = 'Фильмы'
 
+
 class RatingFilm(models.Model):
     # Рейтинг фильма
     value = models.FloatField('Рейтинг фильма', default=0)
@@ -91,13 +95,13 @@ class RatingFilm(models.Model):
         verbose_name = 'Рейтинг'
         verbose_name_plural = 'Рейтинги'
 
+
 class ReviewsFilm(models.Model):
     # Отзывы к фильму
     email = models.EmailField()
     name = models.CharField('Имя пользователя', max_length=100)
     movie = models.ForeignKey(Movie, verbose_name='Фильм', on_delete=models.CASCADE)
     text = models.TextField('Отзыв', max_length=5000)
-    parent = models.ForeignKey('self', verbose_name='Родитель', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} - {self.movie}"
