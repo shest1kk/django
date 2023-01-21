@@ -8,22 +8,43 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import ReviewForm
-from .models import Movie, Categories
+from .models import Movie, Categories, Genre
 from .serializers import MovieSerializer
 
 
-class MoviesView(ListView):
+class GenreYears:
+    # Вывод жанров и годов фильмов
+
+    def get_genres(self):
+        return Genre.objects.all()
+
+    def get_years(self):
+        years_sorted_list = sorted(set(Movie.objects.values_list('year', flat=True)))
+        return years_sorted_list
+
+
+class MoviesView(GenreYears, ListView):
     # Список фильмов
     model = Movie
     queryset = Movie.objects.all()
     template_name = 'movies/movie_list.html'
 
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     context['categories'] = Categories.objects.all()
+    #     return context
 
-class MovieDetailView(DetailView):
+
+class MovieDetailView(GenreYears, DetailView):
     # Карточка фильма
     model = Movie
     slug_field = "url"
     template_name = 'movies/movie_detail.html'
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     context['categories'] = Categories.objects.all()
+    #     return context
 
 
 class AddReview(View):
@@ -37,6 +58,12 @@ class AddReview(View):
             form.save()
         return redirect(movie.get_absolute_url())
 
+
+class FilterMoviesView(GenreYears, ListView):
+    # Фильтрация фильмов
+    def get_queryset(self):
+        queryset = Movie.objects.filter(year__in=self.request.GET.getlist('year'))
+        return queryset
 
 class MoviesAPIView(APIView):
 
@@ -56,3 +83,4 @@ class MoviesAPIView(APIView):
         )
 
         return Response({'films': model_to_dict(new_entry)})
+
