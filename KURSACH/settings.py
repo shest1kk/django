@@ -113,11 +113,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_DIR = BASE_DIR / 'static'
-STATICFILES_DIRS = [
-    STATIC_DIR
-]
+STATICFILES_DIRS = [STATIC_DIR]
 
 # STATIC_ROOT = BASE_DIR / 'static'
 
@@ -127,9 +125,8 @@ MEDIA_ROOT = BASE_DIR / 'images'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'prestige',
@@ -175,10 +172,10 @@ CKEDITOR_CONFIGS = {
         # 'filebrowserWindowHeight': 725,
         # 'filebrowserWindowWidth': 940,
         # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.javascript?config=TeX-AMS_HTML',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
+            'uploadimage',  # the upload image feature
             # your extra plugins here
             'div',
             'autolink',
@@ -193,6 +190,6 @@ CKEDITOR_CONFIGS = {
             'dialogui',
             'elementspath',
             'youtube',
-  ]),
+        ])
     }
 }

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Actors, Categories, Cinemas, Genre, Movie, RatingFilm, ReviewsFilm
+from .models import Actors, Categories, Cinemas, Genre, Movie, ReviewsFilm
 from django.utils.safestring import mark_safe
 
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -62,28 +62,28 @@ class ReviewsInFilms(admin.TabularInline):
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'get_image', 'url')
-    list_filter = ('category', 'year',)
+    list_filter = ('category', 'year', 'genre',)
     search_fields = ('title', 'category__name',)
     readonly_fields = ('get_image',)
     list_display_links = ('title',)
-    form = MovieAdminForm
     inlines = [ReviewsInFilms]
     save_on_top = True
     save_as = True
     search_help_text = False
     ordering = ('id',)
+    form = MovieAdminForm
 
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.image.url} width="50" height="60"')
 
     get_image.short_description = 'Изображение'
 
-
-@admin.register(RatingFilm)
-class RatingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'movie', 'value')
-    list_display_links = ('movie',)
-    ordering = ('id',)
+#
+# @admin.register(RatingFilm)
+# class RatingAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'movie', 'value')
+#     list_display_links = ('movie',)
+#     ordering = ('id',)
 
 
 @admin.register(ReviewsFilm)

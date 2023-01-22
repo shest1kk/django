@@ -1,6 +1,6 @@
 from django import template
 
-from main.models import Categories, Movie
+from main.models import Categories, Movie, Genre
 
 register = template.Library()
 
@@ -9,6 +9,10 @@ register = template.Library()
 # Вывод категорий на сайте
 def get_categories():
     return Categories.objects.all()
+
+@register.simple_tag()
+def get_genres():
+    return Genre.objects.all()
 
 
 @register.inclusion_tag('movies/tags/last_movies.html')

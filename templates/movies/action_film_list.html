@@ -1,6 +1,6 @@
 {% extends 'movies/base.html' %}
-{% load templatetag %}
 {% block header %} bg1 {% endblock header %}
+{% block title %} Боевики {% endblock title %}
 {% block movie %}
     <div class="left-ads-display col-lg-9">
         <div class="row">
@@ -17,6 +17,7 @@
                                 <a href="{{ movie.get_absolute_url }}" class="editContent">
                                     {{ movie.title }}</a>
                             </h4>
+
                             <div class="product_price">
                                 <div class="grid-price">
                                     <a href="{{ movie.get_absolute_url }}">
@@ -24,7 +25,6 @@
                                     </a>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     {% endif %}
             </ul>
         </div>
+
     </div>
-
-
 {% endblock movie %}
+<!-- //contact -->

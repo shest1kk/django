@@ -10,9 +10,9 @@ dist
 db.sqlite3
 
 venv
+static/admin
 static/ckeditor
 static/rest_framework
-static/admin/js
 
 prod_settings.py
 local_settings.py

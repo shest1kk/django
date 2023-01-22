@@ -48,37 +48,7 @@
                                   style="outline: none; cursor: inherit;">5.0</span>
                         </a>
                     </li>
-                    <div class="share-desc">
-                        <div class="share">
-                            <h4 class="editContent"
-                                style="outline: none; cursor: inherit;">
-                                Share:</h4>
-                            <ul class="w3layouts_social_list list-unstyled">
-                                <li>
-                                    <a href="#" class="w3pvt_facebook editContent"
-                                       style="outline: none; cursor: inherit;">
-                                                <span class="fa fa-facebook-f"
-                                                      style="outline: none; cursor: inherit;"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="w3pvt_twitter editContent"
-                                       style="outline: none; cursor: inherit;">
-                                                <span class="fa fa-twitter"
-                                                      style="outline: none; cursor: inherit;"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="w3pvt_dribble editContent"
-                                       style="outline: none; cursor: inherit;">
-                                                <span class="fa fa-dribbble"
-                                                      style="outline: none; cursor: inherit;"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
+                </ul>
             </div>
         </div>
         <div class="row sub-para-w3layouts mt-5">
@@ -137,41 +107,42 @@
                 <!--  //contact form grid ends here -->
             </div>
         </div>
-    <div class="column mt-5">
-    <h3 class="editContent text-center" style="outline: none; cursor: inherit; width:760px;">
+        <div class="column mt-5">
+            <h3 class="editContent text-center" style="outline: none; cursor: inherit; width:760px;">
                                     <span class="sub-tittle editContent"
-                                          style="outline: none; cursor: inherit;"></span>Отзывы({{ movie.reviewsfilm_set.count }})</h3>
-    <div class="section mt-5">
-        {% for review in movie.reviewsfilm_set.all %}
-            <div class="media mb-4">
-                <img src="{% static '/images/reviewers.jpg' %}" class="my-2 img-fluid" alt="image">
-                <div class="media-body mt-4 ml-4">
-                    <h5 class="mt-0 editContent">{{ review.name }}</h5>
-                    <p class="mt-2 editContent">
-                        {{ review.text }}
-                    </p>
-                    {#                    <div class="media mt-5 editContent"#}
-                    {#                         style="outline: none; cursor: inherit;">#}
-                    {#                        <a class="pr-3" href="#">#}
-                    {#                            <img src="bundles/images/te1.jpg" class="img-fluid "#}
-                    {#                                 alt="image" style="outline: none; cursor: inherit;">#}
-                    {#                        </a>#}
-                    {#                        <div class="media-body">#}
-                    {#                            <h5 class="mt-0 editContent"#}
-                    {#                                style="outline: none; cursor: inherit;">Leia Organa</h5>#}
-                    {#                            <p class="mt-2 editContent"#}
-                    {#                               style="outline: none; cursor: inherit;"> Cras sit amet#}
-                    {#                                nibh libero, in gravida nulla. Nulla vel metus#}
-                    {#                                scelerisque ante sollicitudin. Cras purus odio,#}
-                    {#                                vestibulum in vulputate at, tempus viverra turpis. Fusce#}
-                    {#                                condimentum nunc ac nisi vulputate fringilla..</p>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
-                </div>
+                                          style="outline: none; cursor: inherit;"></span>Отзывы({{ movie.reviewsfilm_set.count }})
+            </h3>
+            <div class="section mt-5">
+                {% for review in movie.reviewsfilm_set.all %}
+                    <div class="media mb-4">
+                        <img src="{% static '/images/reviewers.jpg' %}" class="my-2 img-fluid" alt="image">
+                        <div class="media-body mt-4 ml-4">
+                            <h5 class="mt-0 editContent">{{ review.name }}</h5>
+                            <p class="mt-2 editContent">
+                                {{ review.text }}
+                            </p>
+                            {#                    <div class="media mt-5 editContent"#}
+                            {#                         style="outline: none; cursor: inherit;">#}
+                            {#                        <a class="pr-3" href="#">#}
+                            {#                            <img src="bundles/images/te1.jpg" class="img-fluid "#}
+                            {#                                 alt="image" style="outline: none; cursor: inherit;">#}
+                            {#                        </a>#}
+                            {#                        <div class="media-body">#}
+                            {#                            <h5 class="mt-0 editContent"#}
+                            {#                                style="outline: none; cursor: inherit;">Leia Organa</h5>#}
+                            {#                            <p class="mt-2 editContent"#}
+                            {#                               style="outline: none; cursor: inherit;"> Cras sit amet#}
+                            {#                                nibh libero, in gravida nulla. Nulla vel metus#}
+                            {#                                scelerisque ante sollicitudin. Cras purus odio,#}
+                            {#                                vestibulum in vulputate at, tempus viverra turpis. Fusce#}
+                            {#                                condimentum nunc ac nisi vulputate fringilla..</p>#}
+                            {#                        </div>#}
+                            {#                    </div>#}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
-    </div>
+        </div>
     </div>
     </div>
     </div>
