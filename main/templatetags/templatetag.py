@@ -1,6 +1,6 @@
 from django import template
 
-from main.models import Categories, Movie, Genre
+from main.models import Categories, Movie, Genre, Cinemas
 
 register = template.Library()
 
@@ -13,6 +13,14 @@ def get_categories():
 @register.simple_tag()
 def get_genres():
     return Genre.objects.all()
+
+@register.simple_tag()
+def get_cinemas():
+    return Cinemas.objects.all()
+
+@register.simple_tag()
+def get_moscino():
+    return Cinemas.objects.filter(url='moscino-saturn').get()
 
 @register.simple_tag()
 def get_years():

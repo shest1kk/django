@@ -10,6 +10,19 @@
             <input type="checkbox" id="drop">
             <ul class="menu mt-2">
                 <li class="active"><a href="/">{% trans 'Главная' %} </a></li>
+
+            <li><label for="drop-2" class="toggle">{% trans 'Кинотеатры' %}<span class="fa fa-angle-down"
+                                                                                aria-hidden="true"></span> </label>
+                    <a href="#">{% trans 'Кинотеатры' %}<span class="fa fa-angle-down" aria-hidden="true"></span></a>
+                    <input type="checkbox" id="drop-2">
+                    <ul>
+                        {% get_cinemas as cinemas %}
+                        {% for cinema in cinemas %}
+                            <li><a href="/{{ cinema.url }}">{{ cinema.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
                 <li><label for="drop-2" class="toggle">{% trans 'Категории' %}<span class="fa fa-angle-down"
                                                                                     aria-hidden="true"></span> </label>
                     <a href="#">{% trans 'Категории' %} <span class="fa fa-angle-down" aria-hidden="true"></span></a>

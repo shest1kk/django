@@ -3,12 +3,20 @@ from django.forms import model_to_dict
 from django.views import View
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .forms import ReviewForm
-from .models import Movie, Genre, Categories
-from .serializers import MovieSerializer
+from .models import Movie, Genre, Categories, ReviewsFilm, Cinemas
+from .serializers import MovieSerializer, MovieDetailSerializer, ReviewCreateSerializer, CinemasSerializer, \
+    CinemasCreateSerializer
+
+
+class MoscinoSaturn(ListView):
+    model = Cinemas
+    queryset = Cinemas.objects.filter(url='moscino-saturn')
+    template_name = 'movies/moscino-saturn.html'
 
 
 class GenreYears:
@@ -117,23 +125,54 @@ class AddReview(View):
         return redirect(movie.get_absolute_url())
 
 
-class MoviesAPIView(APIView):
+class CinemasAPIView(generics.ListAPIView):
+    serializer_class = CinemasSerializer
+
+    def get_queryset(self):
+        cinemas = Cinemas.objects.all()
+        return cinemas
+
+
+class MoviesAPIView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+
+    def get_queryset(self):
+        movies = Movie.objects.all()
+        return movies
+
+    # def post(self, request):
+    #     new_entry = Movie.objects.create(
+    #         year=request.data['year'],
+    #         title=request.data['title'],
+    #         category=request.data['name'],
+    #         genre=request.data['genre'],
+    #         description=request.data['description'],
+    #         contry=request.data['country'],
+    #         actors=request.data['actors'],
+    #     )
+    #     return Response({'films': model_to_dict(new_entry)})
+
+
+class MoviesDetailAPIView(generics.RetrieveAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieDetailSerializer
+
+
+class ReviewsCreateFilmAPIView(generics.CreateAPIView):
 
     def get(self, request):
-        queryset = Movie.objects.all()
-        return Response({'films': MovieSerializer(queryset, many=True).data})
+        queryset = ReviewsFilm.objects.all()
+        return Response({'reviews': ReviewCreateSerializer(queryset, many=True).data})
 
-    def post(self, request):
-        new_entry = Movie.objects.create(
-            year=request.data['year'],
-            title=request.data['title'],
-            category=request.data['name'],
-            genre=request.data['genre'],
-            description=request.data['description'],
-            contry=request.data['country'],
-            actors=request.data['actors'],
-        )
-        return Response({'films': model_to_dict(new_entry)})
+    serializer_class = ReviewCreateSerializer
+
+
+class CinemasCreateAPIView(generics.CreateAPIView):
+    def get(self, request):
+        queryset = Cinemas.objects.all()
+        return Response({'cinemas': CinemasCreateSerializer(queryset, many=True).data})
+
+    serializer_class = CinemasCreateSerializer
 
 
 class SearchBar(ListView):

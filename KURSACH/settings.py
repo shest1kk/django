@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware'
 ]
 
+
 ROOT_URLCONF = 'KURSACH.urls'
 
 TEMPLATES = [
@@ -218,6 +219,12 @@ CKEDITOR_CONFIGS = {
             'youtube',
         ])
     }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3
 }
 
 SITE_ID = 1
