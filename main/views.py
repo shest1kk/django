@@ -183,6 +183,7 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
             return MovieDetailSerializer
 
 
+
 # class MoviesAPIView(generics.ListAPIView):
 #     # Вывод кино и мультфильмов
 #     serializer_class = MovieSerializer
@@ -192,7 +193,7 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
 #         return movies
 #
 
-class MoviesDetailAPIView(generics.RetrieveAPIView):
+class MoviesDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     # Вывод полной информации по конкретному фильму/мультику
     queryset = Movie.objects.all()
     serializer_class = MovieDetailSerializer

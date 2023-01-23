@@ -12,7 +12,6 @@ class CinemasTranslation(TranslationOptions):
 class CategoriesTranslation(TranslationOptions):
     fields = ('name', 'description')
 
-
 @register(Genre)
 class GenreTranslation(TranslationOptions):
     fields = ('name', 'description')

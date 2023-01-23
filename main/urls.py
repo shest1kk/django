@@ -4,6 +4,9 @@ from .views import AnimationView, OnlyMoviesView, ComedyGenreView, HorrorGenreVi
     ActionFilmGenreView, FantasticGenreView, TrillerGenreView, SearchBar, MoviesView, MovieDetailView, AddReview, \
     MoviesDetailAPIView, ReviewsCreateFilmAPIView, MoscinoSaturn, CinemasAPIView, CinemasCreateAPIView, MovieViewSet
 
+from rest_framework import routers
+
+
 urlpatterns = [
     path('', MoviesView.as_view()),
     path('moscino-saturn', MoscinoSaturn.as_view()),

@@ -1,5 +1,7 @@
+import simple_history
 from django.contrib import admin
 from django import forms
+from simple_history.admin import SimpleHistoryAdmin
 
 from .models import Actors, Categories, Cinemas, Genre, Movie, ReviewsFilm
 from django.utils.safestring import mark_safe
@@ -71,6 +73,7 @@ class MovieAdmin(TranslationAdmin):
     search_fields = ('title', 'category__name',)
     readonly_fields = ('get_image',)
     list_display_links = ('title',)
+    raw_id_fields = ['genre', 'category']
     inlines = [ReviewsInFilms]
     save_on_top = True
     save_as = True
@@ -92,7 +95,7 @@ class MovieAdmin(TranslationAdmin):
 
 
 @admin.register(ReviewsFilm)
-class ReviewsFilmAdmin(admin.ModelAdmin):
+class ReviewsFilmAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     list_display = ('id', 'movie', 'email', 'text')
     readonly_fields = ('name', 'email', 'movie')
     list_display_links = ('movie',)

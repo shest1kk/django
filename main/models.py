@@ -72,7 +72,6 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Actors, verbose_name='Актеры', related_name='film_actor')
     image = models.ImageField('Постер', upload_to='movies/')
     url = models.SlugField(max_length=130, unique=True)
-    history = HistoricalRecords()
 
     def __str__(self):
         return self.title
