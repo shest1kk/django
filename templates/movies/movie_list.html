@@ -1,8 +1,8 @@
 {% extends 'movies/base.html' %}
-{% load templatetag %}
+{% load i18n templatetag %}
 {% block header %} bg1 {% endblock header %}
 {% block movie %}
-    <div class="left-ads-display col-lg-9">
+    <div class="left-ads-display col-lg-9" id="list">
         <div class="row">
             {% for movie in movie_list %}
                 <div class="col-md-4 product-men" id="col-md-4 product-men">
@@ -20,7 +20,7 @@
                             <div class="product_price">
                                 <div class="grid-price">
                                     <a href="{{ movie.get_absolute_url }}">
-                                        <button type="button" class="btn btn-dark">Подробнее</button>
+                                        <button type="button" value="321" class="btn btn-dark">{% trans 'Подробнее' %}</button>
                                     </a>
                                 </div>
                             </div>
@@ -34,20 +34,20 @@
             <ul class="pagination justify-content-center" style="width: 300px;">
                 <li class="page-item row">
                     {% if page_obj.has_previous %}
-                        <a class="page-link" href="?page=1">&laquo;</a>
+                        <a class="page-link" href="?page=1#list">&laquo;</a>
                         <a class="page-link"
-                           href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                           href="?page={{ page_obj.previous_page_number }}#list">{{ page_obj.previous_page_number }}</a>
                     {% endif %}
                 </li>
                 <li class="page-item active">
-                    <a class="page-link" href="#">{{ page_obj.number }} <span class="sr-only">(current)</span></a>
+                    <a class="page-link" href="#list">{{ page_obj.number }} <span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="page-item row">
                     {% if page_obj.has_next %}
                         <a class="page-link"
-                           href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
-                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                           href="?page={{ page_obj.next_page_number }}#list">{{ page_obj.next_page_number }}</a>
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}#list">&raquo;</a>
                         </li>
                     {% endif %}
             </ul>

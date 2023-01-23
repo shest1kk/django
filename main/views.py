@@ -1,4 +1,3 @@
-
 from django.shortcuts import redirect, render
 from django.forms import model_to_dict
 from django.views import View
@@ -14,32 +13,35 @@ from .serializers import MovieSerializer
 
 class GenreYears:
     """Жанры и года выхода фильмов"""
+
     def get_genres(self):
         return Genre.objects.all()
 
     def get_years(self):
-        return Movie.objects.values("year")
+        years_sorted_list = sorted(set(Movie.objects.values_list('year', flat=True)))
+        return years_sorted_list
 
 
 class MoviesView(GenreYears, ListView):
     # Список фильмов
     model = Movie
     queryset = Movie.objects.all()
-    paginate_by = 6
+    paginate_by = 3
     ordering = ['-id']
     template_name = 'movies/movie_list.html'
 
-class AnimationView(ListView):
+
+class AnimationView(GenreYears, ListView):
     model = Movie
-    queryset = Movie.objects.filter(category_id = 2)
+    queryset = Movie.objects.filter(category_id=2)
     paginate_by = 6
     ordering = ['-id']
     template_name = 'movies/animation_list.html'
 
 
-class OnlyMoviesView(ListView):
+class OnlyMoviesView(GenreYears, ListView):
     model = Movie
-    queryset = Movie.objects.filter(category_id = 1)
+    queryset = Movie.objects.filter(category_id=1)
     paginate_by = 6
     ordering = ['-id']
     template_name = 'movies/onlymovies_list.html'
@@ -48,41 +50,48 @@ class OnlyMoviesView(ListView):
     #     context['categories'] = Categories.objects.all()
     #     return context
 
-class ComedyGenreView(ListView):
+
+class ComedyGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='comedy')
     paginate_by = 6
     template_name = 'movies/comedy_list.html'
 
-class HorrorGenreView(ListView):
+
+class HorrorGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='horror')
     paginate_by = 6
     template_name = 'movies/horror_list.html'
 
-class CartoonGenreView(ListView):
+
+class CartoonGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='cartoon')
     paginate_by = 6
     template_name = 'movies/cartoon_list.html'
 
-class ActionFilmGenreView(ListView):
+
+class ActionFilmGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='action_film')
     paginate_by = 6
     template_name = 'movies/action_film_list.html'
 
-class FantasticGenreView(ListView):
+
+class FantasticGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='fantastic')
     paginate_by = 6
     template_name = 'movies/fantastic_list.html'
 
-class TrillerGenreView(ListView):
+
+class TrillerGenreView(GenreYears, ListView):
     model = Movie
     queryset = Movie.objects.filter(genre__url='triller')
     paginate_by = 6
     template_name = 'movies/triller_list.html'
+
 
 class MovieDetailView(GenreYears, DetailView):
     # Карточка фильма
@@ -107,6 +116,7 @@ class AddReview(View):
             form.save()
         return redirect(movie.get_absolute_url())
 
+
 class MoviesAPIView(APIView):
 
     def get(self, request):
@@ -124,3 +134,17 @@ class MoviesAPIView(APIView):
             actors=request.data['actors'],
         )
         return Response({'films': model_to_dict(new_entry)})
+
+
+class SearchBar(ListView):
+    template_name = 'movies/movie_list.html'
+    paginate_by = 6
+
+    def get_queryset(self):
+        q = self.request.GET.get('q').capitalize()
+        return Movie.objects.filter(title__icontains=q)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context

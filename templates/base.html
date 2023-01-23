@@ -1,4 +1,4 @@
-{% load static %}
+{% load i18n static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -31,7 +31,7 @@
 
     <ol class="breadcrumb editContent">
         <li class="breadcrumb-item">
-            <a href="/" class="editContent">Главная</a>
+            <a href="/" class="editContent">{% trans 'Главная' %}</a>
         </li>
         <li class="breadcrumb-item active editContent">{{ movie.title }}</li>
     </ol>

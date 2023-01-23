@@ -1,55 +1,52 @@
+{% load i18n templatetag %}
 <footer class="editContent">
     <div class="container text-center">
         <div class="row footer-top">
-                        <div class="col-lg-8 mx-auto my-5">
+            <div class="col-lg-8 mx-auto my-5">
                 <div class="w3layouts-news-letter" style="width: 760px;">
-                    <h3 class="footer-title text-uppercase editContent mb-lg-4 mb-3">Рассылка</h3>
-                    <p class="editContent" >Подписавшись на рассылку, вы всегда будете получать актуальную информацию о фильмах</p>
-                    <form action="#" method="post" class="w3layouts-newsletter">
-                        <input type="email" name="Email" class="editContent" placeholder="Введите почту..." required="" >
-                        <button class="btn1 btn" ><span class="fa fa-paper-plane-o" aria-hidden="true" ></span></button>
-                    </form>
+                    <h3 class="footer-title text-uppercase editContent mb-lg-4 mb-3">{% trans 'О нас' %}</h3>
+                    <p class="editContent">{% trans 'КиноАфиша - лучший способ просмотреть список актуальных фильмов.' %}</p>
+                    <p class="editContent">{% trans 'Мы постарались собрать всевозможные новинки.' %}</p>
+
                 </div>
                 <div class="row mt-lg-4 bottom-w3layouts-sec-nav justify-content-center" style="width: 760px;">
                     <div class="col-md-4 footer-grid_section_w3layouts">
-                        <h3 class="footer-title text-uppercase editContent mb-lg-4 mb-3" >Разделы</h3>
+                        <h3 class="footer-title text-uppercase editContent mb-lg-4 mb-3">{% trans 'Разделы' %}</h3>
                         <ul class="list-unstyled w3layouts-icons">
+
                             <li>
-                                <a href="/" class="editContent" >Главная</a>
-                            </li>
-                            <li>
-                                <a href="about.html" class="editContent" >Категории</a>
-                            </li>
-                            <li>
-                                <a href="contact.html" class="editContent" >Контакты</a>
-                            </li>
+                                {% get_categories as categories %}
+                                {% for category in categories %}
+                                    <li><a class="editContent" href="/{{ category.url }}">{{ category.name }}</a></li>
+                                {% endfor %}
                         </ul>
                     </div>
                     <div class="col-md-4 footer-grid_section_w3layouts">
-                        <h3 class="footer-title text-uppercase text-wh mb-lg-4 mb-3 editContent" >Контакты</h3>
+                        <h3 class="footer-title text-uppercase text-wh mb-lg-4 mb-3 editContent">{% trans 'Контакты' %}</h3>
                         <div class="contact-info">
                             <div class="footer-address-inf my-4">
-                                <h4 class="ad-info mb-2 editContent" >Email</h4>
-                                <p class="editContent" ><a href="mailto:tux703404@gmail.com">tux703404@gmail.com</a></p>
+                                <h4 class="ad-info mb-2 editContent">{% trans 'Почта' %}</h4>
+                                <p class="editContent"><a href="mailto:tux703404@gmail.com">tux703404@gmail.com</a></p>
                             </div>
                             <div class="footer-address-inf">
-                                <h4 class="ad-info mb-2 editContent">Наш адрес</h4>
-                                <p class="editContent" >Россия, г.Москва, ул. Павла Корчагина, 20А, к3</p>
+                                <h4 class="ad-info mb-2 editContent">{% trans 'Наш адрес' %}</h4>
+                                <p class="editContent">{% trans 'Россия, г.Москва, ул. Павла Корчагина, 20А, к3' %}</p>
                             </div>
                         </div>
                     </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- //footer -->
-        <div class="row mx-auto">
-            <div class="container mx-auto">
-                <div class="row justify-content-center">
-                    <p class="text-center">Пахарев Егор | 211-323 | КиноАфиша </p>
-                    <a href="#home" class="move-top text-center ml-3"><span class="fa fa-long-arrow-up" aria-hidden="true" ></span></a>
-                    <!-- //move top icon -->
                 </div>
             </div>
         </div>
+    </div>
+</footer>
+<!-- //footer -->
+<div class="row mx-auto">
+    <div class="container mx-auto">
+        <div class="row justify-content-center">
+            <p class="text-center">Пахарев Егор | 211-323 | КиноАфиша </p>
+            <a href="#home" class="move-top text-center ml-3"><span class="fa fa-long-arrow-up"
+                                                                    aria-hidden="true"></span></a>
+            <!-- //move top icon -->
+        </div>
+    </div>
+</div>

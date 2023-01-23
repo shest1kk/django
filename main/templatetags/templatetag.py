@@ -14,6 +14,11 @@ def get_categories():
 def get_genres():
     return Genre.objects.all()
 
+@register.simple_tag()
+def get_years():
+    years_sorted_list = sorted(set(Movie.objects.values_list('year', flat=True)))
+    return years_sorted_list
+
 
 @register.inclusion_tag('movies/tags/last_movies.html')
 def get_last_movies():

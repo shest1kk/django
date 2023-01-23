@@ -82,7 +82,6 @@ class Movie(models.Model):
         verbose_name = 'Фильм'
         verbose_name_plural = 'Фильмы'
 
-
 class RatingFilm(models.Model):
     # Рейтинг фильма
     value = models.FloatField('Рейтинг фильма', default=0)

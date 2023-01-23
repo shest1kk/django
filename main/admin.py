@@ -6,10 +6,11 @@ from django.utils.safestring import mark_safe
 
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
+from modeltranslation.admin import TranslationAdmin
 
 class MovieAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
-
+    description_ru = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
+    description_en = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
     class Meta:
         model = Movie
         fields = '__all__'
@@ -20,7 +21,7 @@ admin.site.site_header = 'КиноАфиша'
 
 
 @admin.register(Actors)
-class ActorsAdmin(admin.ModelAdmin):
+class ActorsAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'age', 'get_image')
     readonly_fields = ('get_image',)
     list_display_links = ('name',)
@@ -33,21 +34,21 @@ class ActorsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Categories)
-class CategoriesAdmin(admin.ModelAdmin):
+class CategoriesAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'url')
     list_display_links = ('name',)
     ordering = ('id',)
 
 
 @admin.register(Cinemas)
-class CinemasAdmin(admin.ModelAdmin):
+class CinemasAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'description', 'number', 'address', 'url')
     list_display_links = ('name', 'number')
     ordering = ('id',)
 
 
 @admin.register(Genre)
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'url')
     list_display_links = ('name',)
     ordering = ('id',)
@@ -60,7 +61,7 @@ class ReviewsInFilms(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     list_display = ('id', 'title', 'category', 'get_image', 'url')
     list_filter = ('category', 'year', 'genre',)
     search_fields = ('title', 'category__name',)
