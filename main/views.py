@@ -1,16 +1,33 @@
-from django.shortcuts import redirect, render
-from django.forms import model_to_dict
+from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import ListView, DetailView
-from django.core.paginator import Paginator
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from .forms import ReviewForm
-from .models import Movie, Genre, Categories, ReviewsFilm, Cinemas
+from .models import Movie, Genre, ReviewsFilm, Cinemas
 from .serializers import MovieSerializer, MovieDetailSerializer, ReviewCreateSerializer, CinemasSerializer, \
     CinemasCreateSerializer
+
+from .service import MovieFilter
+
+import csv
+
+from simple_history.models import HistoricalRecords
+
+def export_to_csv(request):
+    movies = Movie.objects.all()
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=movies_export.csv; encoding="cp1251"; newline="";'
+    writer = csv.writer(response)
+    writer.writerow(['Год', 'Название', 'Описание', 'Страна', 'Изображение' 'Ссылка'])
+    movies_fields = movies.values_list('year', 'title', 'description', 'country',
+                                      'image', 'url')
+    for movie in movies_fields:
+        writer.writerow(movie)
+    return response
 
 
 class MoscinoSaturn(ListView):
@@ -125,56 +142,6 @@ class AddReview(View):
         return redirect(movie.get_absolute_url())
 
 
-class CinemasAPIView(generics.ListAPIView):
-    serializer_class = CinemasSerializer
-
-    def get_queryset(self):
-        cinemas = Cinemas.objects.all()
-        return cinemas
-
-
-class MoviesAPIView(generics.ListAPIView):
-    serializer_class = MovieSerializer
-
-    def get_queryset(self):
-        movies = Movie.objects.all()
-        return movies
-
-    # def post(self, request):
-    #     new_entry = Movie.objects.create(
-    #         year=request.data['year'],
-    #         title=request.data['title'],
-    #         category=request.data['name'],
-    #         genre=request.data['genre'],
-    #         description=request.data['description'],
-    #         contry=request.data['country'],
-    #         actors=request.data['actors'],
-    #     )
-    #     return Response({'films': model_to_dict(new_entry)})
-
-
-class MoviesDetailAPIView(generics.RetrieveAPIView):
-    queryset = Movie.objects.all()
-    serializer_class = MovieDetailSerializer
-
-
-class ReviewsCreateFilmAPIView(generics.CreateAPIView):
-
-    def get(self, request):
-        queryset = ReviewsFilm.objects.all()
-        return Response({'reviews': ReviewCreateSerializer(queryset, many=True).data})
-
-    serializer_class = ReviewCreateSerializer
-
-
-class CinemasCreateAPIView(generics.CreateAPIView):
-    def get(self, request):
-        queryset = Cinemas.objects.all()
-        return Response({'cinemas': CinemasCreateSerializer(queryset, many=True).data})
-
-    serializer_class = CinemasCreateSerializer
-
-
 class SearchBar(ListView):
     template_name = 'movies/movie_list.html'
     paginate_by = 6
@@ -187,3 +154,67 @@ class SearchBar(ListView):
         context = super().get_context_data(*args, **kwargs)
         context['q'] = self.request.GET.get('q')
         return context
+
+
+# Апипишка
+
+class CinemasAPIView(generics.ListAPIView):
+    # Вывод списка кинотеатров
+    serializer_class = CinemasSerializer
+
+    def get_queryset(self):
+        cinemas = Cinemas.objects.all()
+        return cinemas
+
+
+class MovieViewSet(viewsets.ReadOnlyModelViewSet):
+    """Вывод списка фильмов"""
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = MovieFilter
+
+    def get_queryset(self):
+        movies = Movie.objects.all()
+        return movies
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return MovieSerializer
+        elif self.action == "retrieve":
+            return MovieDetailSerializer
+
+
+# class MoviesAPIView(generics.ListAPIView):
+#     # Вывод кино и мультфильмов
+#     serializer_class = MovieSerializer
+#
+#     def get_queryset(self):
+#         movies = Movie.objects.all()
+#         return movies
+#
+
+class MoviesDetailAPIView(generics.RetrieveAPIView):
+    # Вывод полной информации по конкретному фильму/мультику
+    queryset = Movie.objects.all()
+    serializer_class = MovieDetailSerializer
+
+
+class ReviewsCreateFilmAPIView(generics.CreateAPIView):
+    # получение и создание отзыва
+    # permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        queryset = ReviewsFilm.objects.all()
+        return Response({'reviews': ReviewCreateSerializer(queryset, many=True).data})
+
+    serializer_class = ReviewCreateSerializer
+
+
+class CinemasCreateAPIView(generics.CreateAPIView):
+    # Получение и создание киноетатра
+    # permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        queryset = Cinemas.objects.all()
+        return Response({'cinemas': CinemasCreateSerializer(queryset, many=True).data})
+
+    serializer_class = CinemasCreateSerializer

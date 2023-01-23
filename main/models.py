@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from simple_history.models import HistoricalRecords
 
 class Cinemas(models.Model):
     # Список доступных кинотеатров
@@ -9,6 +9,7 @@ class Cinemas(models.Model):
     number = models.PositiveSmallIntegerField('Контактный номер', help_text='Введите номер кинотеатра')
     address = models.CharField('Адрес кинотеатра', max_length=150)
     url = models.SlugField(max_length=150, unique=True)
+
 
     def __str__(self):
         return self.name
@@ -71,6 +72,7 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Actors, verbose_name='Актеры', related_name='film_actor')
     image = models.ImageField('Постер', upload_to='movies/')
     url = models.SlugField(max_length=130, unique=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.title
@@ -81,6 +83,7 @@ class Movie(models.Model):
     class Meta:
         verbose_name = 'Фильм'
         verbose_name_plural = 'Фильмы'
+
 
 class RatingFilm(models.Model):
     # Рейтинг фильма
@@ -101,6 +104,7 @@ class ReviewsFilm(models.Model):
     name = models.CharField('Имя пользователя', max_length=100)
     movie = models.ForeignKey(Movie, verbose_name='Фильм', on_delete=models.CASCADE)
     text = models.TextField('Отзыв', max_length=5000)
+    history = HistoricalRecords()
 
     def __str__(self):
         return f"{self.name} - {self.movie}"

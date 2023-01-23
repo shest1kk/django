@@ -1,8 +1,8 @@
 from django.urls import path
 from . import views
-from .views import MoviesAPIView, AnimationView, OnlyMoviesView, ComedyGenreView, HorrorGenreView, CartoonGenreView, \
+from .views import AnimationView, OnlyMoviesView, ComedyGenreView, HorrorGenreView, CartoonGenreView, \
     ActionFilmGenreView, FantasticGenreView, TrillerGenreView, SearchBar, MoviesView, MovieDetailView, AddReview, \
-    MoviesDetailAPIView, ReviewsCreateFilmAPIView, MoscinoSaturn, CinemasAPIView, CinemasCreateAPIView
+    MoviesDetailAPIView, ReviewsCreateFilmAPIView, MoscinoSaturn, CinemasAPIView, CinemasCreateAPIView, MovieViewSet
 
 urlpatterns = [
     path('', MoviesView.as_view()),
@@ -18,8 +18,10 @@ urlpatterns = [
     path('search/', SearchBar.as_view(), name='search'),
     path("<slug:slug>/", MovieDetailView.as_view(), name="movie_detail"),
     path('review/<int:pk>/', AddReview.as_view(), name='add_review'),
-    path('api/v1/movies', MoviesAPIView.as_view()),
+    path('api/v1/movies', views.MovieViewSet.as_view({'get': 'list'})),
     path('api/v1/cinemas', CinemasCreateAPIView.as_view()),
-    path('api/v1/movies/<int:pk>', MoviesDetailAPIView.as_view()),
-    path('api/v1/review', ReviewsCreateFilmAPIView.as_view())
+    path('api/v1/movies/<int:pk>', MovieViewSet.as_view({'get': 'retrieve'})),
+    path('api/v1/review', ReviewsCreateFilmAPIView.as_view()),
+
+    path('export_to_csv', views.export_to_csv, name='export_to_csv')
 ]
